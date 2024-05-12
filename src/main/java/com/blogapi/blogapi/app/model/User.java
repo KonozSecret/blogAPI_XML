@@ -1,12 +1,10 @@
-package com.blogapi.blogapi.model;
+package com.blogapi.blogapi.app.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 // Entity-Klasse für die Benutzer
 @Entity
+@Table(name ="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
