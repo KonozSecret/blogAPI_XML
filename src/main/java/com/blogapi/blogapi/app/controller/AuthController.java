@@ -1,22 +1,21 @@
 package com.blogapi.blogapi.app.controller;
 
-import com.blogapi.blogapi.app.model.LoginForm;
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com.blogapi.blogapi.app.model.User;
 import com.blogapi.blogapi.app.service.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
-    private final AuthenticationService authenticationService;
-
-    public AuthController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
+    @Autowired
+    AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginForm loginForm) {
-        String authToken = authenticationService.authenticate(loginForm.getUsername(), loginForm.getPassword());
+    public ResponseEntity<String> login(@RequestBody User user) {
+        String authToken = authenticationService.authenticate(user.getUsername(), user.getPassword());
         if (authToken != null) {
             return ResponseEntity.ok(authToken);
         } else {

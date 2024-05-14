@@ -1,26 +1,30 @@
 package com.blogapi.blogapi.app.service;
 
+import com.blogapi.blogapi.app.model.AuthToken;
 import com.blogapi.blogapi.app.model.User;
+import com.blogapi.blogapi.app.repository.AuthTokenRepository;
 import com.blogapi.blogapi.app.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
 public class AuthenticationService {
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    AuthTokenRepository authTokenRepository;
 
-    public AuthenticationService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public String authenticate(String username, String password) {
         User user = userRepository.findByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
-            // Generiere und gib das Authentifizierungstoken zurück
+            // Generiere und speichere das Authentifizierungstoken
             String authToken = generateAuthToken();
+            AuthToken token = new AuthToken(authToken, user);
+            authTokenRepository.save(token);
             return authToken;
         } else {
             // Benutzer nicht gefunden oder ungültige Anmeldeinformationen
@@ -39,19 +43,7 @@ public class AuthenticationService {
     }
 
     public boolean isValidToken(String authToken) {
-        try {
-            // Dekodiere den Base64-Token zurück zu Byte-Array
-            byte[] decodedBytes = Base64.getDecoder().decode(authToken);
-
-            // Überprüfe, ob die Länge des Byte-Arrays 64 ist
-            if(decodedBytes.length != 64)
-                return false;
-
-            // Der Token wird als gültig betrachtet, wenn keine Ausnahme auftritt
-            return true;
-        } catch (IllegalArgumentException e) {
-            // Wenn beim Dekodieren eine IllegalArgumentException auftritt, ist der Token ungültig
-            return false;
-        }
+        AuthToken token = authTokenRepository.findByToken(authToken);
+        return token != null && !token.isExpired();
     }
 }
