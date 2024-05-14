@@ -1,7 +1,7 @@
-package com.blogapi.blogapi.app.controller;
+package com.blogapi.blogapi.controller;
 
-import com.blogapi.blogapi.app.model.Post;
-import com.blogapi.blogapi.app.service.PostService;
+import com.blogapi.blogapi.model.Post;
+import com.blogapi.blogapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

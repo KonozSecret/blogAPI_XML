@@ -1,9 +1,9 @@
-package com.blogapi.blogapi.app.service;
+package com.blogapi.blogapi.service;
 
-import com.blogapi.blogapi.app.model.AuthToken;
-import com.blogapi.blogapi.app.model.User;
-import com.blogapi.blogapi.app.repository.AuthTokenRepository;
-import com.blogapi.blogapi.app.repository.UserRepository;
+import com.blogapi.blogapi.model.AuthToken;
+import com.blogapi.blogapi.model.User;
+import com.blogapi.blogapi.repository.AuthTokenRepository;
+import com.blogapi.blogapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

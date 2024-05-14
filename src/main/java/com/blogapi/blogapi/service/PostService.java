@@ -1,7 +1,7 @@
-package com.blogapi.blogapi.app.service;
+package com.blogapi.blogapi.service;
 
-import com.blogapi.blogapi.app.model.Post;
-import com.blogapi.blogapi.app.repository.PostRepository;
+import com.blogapi.blogapi.model.Post;
+import com.blogapi.blogapi.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

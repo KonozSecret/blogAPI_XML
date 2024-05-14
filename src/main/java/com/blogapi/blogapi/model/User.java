@@ -1,4 +1,4 @@
-package com.blogapi.blogapi.app.model;
+package com.blogapi.blogapi.model;
 
 import jakarta.persistence.*;
 

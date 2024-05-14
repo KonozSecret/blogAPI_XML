@@ -1,6 +1,6 @@
-package com.blogapi.blogapi.app.repository;
+package com.blogapi.blogapi.repository;
 
-import com.blogapi.blogapi.app.model.AuthToken;
+import com.blogapi.blogapi.model.AuthToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

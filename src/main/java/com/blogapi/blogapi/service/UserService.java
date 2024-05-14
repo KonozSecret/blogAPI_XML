@@ -1,12 +1,9 @@
-package com.blogapi.blogapi.app.service;
+package com.blogapi.blogapi.service;
 
-import com.blogapi.blogapi.app.model.User;
-import com.blogapi.blogapi.app.repository.UserRepository;
+import com.blogapi.blogapi.model.User;
+import com.blogapi.blogapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.naming.AuthenticationException;
-import java.util.Optional;
 
 @Service
 public class UserService {
