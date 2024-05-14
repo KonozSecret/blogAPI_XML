@@ -46,4 +46,5 @@ public class AuthenticationService {
         AuthToken token = authTokenRepository.findByToken(authToken);
         return token != null && !token.isExpired();
     }
+
 }
