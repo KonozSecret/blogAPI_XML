@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -23,7 +25,13 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
         }
 
-        // Hier kannst du sicherstellen, dass der Benutzer angemeldet ist und den Post hinzufügen
+        String username = authenticationService.extractUsernameFromToken(authToken);
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+        }
+
+        post.setAuthor(username);
+        post.setCreatedAt(LocalDateTime.now());
 
         boolean added = postService.addPost(post);
         if (added) {

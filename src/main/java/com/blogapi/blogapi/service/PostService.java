@@ -23,17 +23,9 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-
     public boolean addPost(Post post) {
-        try {
-            // Hier kannst du die Logik implementieren, um den Blog-Eintrag zur Datenbank hinzuzufügen
-            postRepository.save(post);
-            return true;
-        } catch (Exception e) {
-            // Fehlerbehandlung hier, falls etwas schief geht
-            e.printStackTrace();
-            return false;
-        }
+        postRepository.save(post);
+        return true;
     }
 
 

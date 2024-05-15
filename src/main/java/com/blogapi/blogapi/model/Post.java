@@ -1,10 +1,11 @@
 package com.blogapi.blogapi.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name ="posts")
+@Table(name = "posts")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +30,12 @@ public class Post {
 
     // Getter und Setter
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
@@ -56,13 +59,15 @@ public class Post {
         return createdAt;
     }
 
-    // Kein Setter für createdAt, da dieses Feld automatisch beim Erstellen des Objekts gesetzt wird
-
     public String getAuthor() {
         return author;
     }
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

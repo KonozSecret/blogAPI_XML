@@ -47,4 +47,12 @@ public class AuthenticationService {
         return token != null && !token.isExpired();
     }
 
+    public String extractUsernameFromToken(String authToken) {
+        AuthToken token = authTokenRepository.findByToken(authToken);
+        if (token != null && !token.isExpired()) {
+            return token.getUser().getUsername();
+        }
+        return null;
+    }
+
 }
