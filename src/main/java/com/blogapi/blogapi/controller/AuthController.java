@@ -31,4 +31,5 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not logged in");
         }
     }
+    //test asdas
 }
