@@ -21,17 +21,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
         String authToken = authenticationService.authenticate(user.getUsername(), user.getPassword());
+        Map<String, String> response = new HashMap<>();
         if (authToken != null) {
-            Map<String, String> response = new HashMap<>();
             response.put("token", authToken);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+            return ResponseEntity.ok(response);
         } else {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "Invalid username or password");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
+            response.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
-
 
     @GetMapping("/isUserLoggedIn")
     public ResponseEntity<String> isUserLoggedIn(@RequestHeader("Authorization") String authToken) {
@@ -41,5 +39,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not logged in");
         }
     }
-    //test asdas
 }
