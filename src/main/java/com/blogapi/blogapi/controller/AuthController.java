@@ -18,6 +18,7 @@ public class AuthController {
     @Autowired
     AuthenticationService authenticationService;
 
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
         String authToken = authenticationService.authenticate(user.getUsername(), user.getPassword());
@@ -32,11 +33,14 @@ public class AuthController {
     }
 
     @GetMapping("/isUserLoggedIn")
-    public ResponseEntity<String> isUserLoggedIn(@RequestHeader("Authorization") String authToken) {
+    public ResponseEntity<Map<String, String>> isUserLoggedIn(@RequestHeader("Authorization") String authToken) {
+        Map<String, String> response = new HashMap<>();
         if (authToken != null && authenticationService.isValidToken(authToken)) {
-            return ResponseEntity.ok("User is logged in");
+            response.put("message", "User is logged in");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not logged in");
+            response.put("message", "User is not logged in");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 }
