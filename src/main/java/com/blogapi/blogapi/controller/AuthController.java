@@ -35,12 +35,16 @@ public class AuthController {
     @GetMapping("/isUserLoggedIn")
     public ResponseEntity<Map<String, String>> isUserLoggedIn(@RequestHeader("Authorization") String authToken) {
         Map<String, String> response = new HashMap<>();
-        if (authToken != null && authenticationService.isValidToken(authToken)) {
-            response.put("message", "User is logged in");
-            return ResponseEntity.ok(response);
-        } else {
-            response.put("message", "User is not logged in");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        if (authToken != null) {
+            if (authenticationService.isValidToken(authToken)) {
+                response.put("message", "User is logged in");
+                return ResponseEntity.ok(response);
+            }
         }
+        response.put("message", "User is not logged in");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
+
+
+
 }

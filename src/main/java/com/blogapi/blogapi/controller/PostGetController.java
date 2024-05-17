@@ -22,10 +22,9 @@ public class PostGetController {
 
     @GetMapping("/getBlog")
     public ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String authToken) {
-        if (!authenticationService.isValidToken(authToken)) {
+            if (!authenticationService.isValidToken(authToken)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         List<Post> posts = postService.getAllPosts();
         if (posts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
