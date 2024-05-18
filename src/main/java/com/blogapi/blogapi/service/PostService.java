@@ -16,10 +16,12 @@ public class PostService {
 
 
     public List<Post> getAllPosts() {
+
         return postRepository.findAll();
     }
 
     public Optional<Post> getPostById(Long id) {
+
         return postRepository.findById(id);
     }
 

@@ -45,6 +45,18 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(@RequestHeader("Authorization") String authToken) {
+        if (authToken != null && authenticationService.invalidateToken(authToken)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Logged out successfully");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Invalid token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
 
 
 }
