@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -15,13 +18,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
         boolean registered = userService.registerUser(user);
+        Map<String, String> response = new HashMap<>();
         if (registered) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Benutzer erfolgreich registriert");
+            response.put("message", "erfolgreich");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Benutzername bereits vergeben");
+            response.put("message", "Benutzername bereits vergeben");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
 
 }
