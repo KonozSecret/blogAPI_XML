@@ -56,18 +56,14 @@ public class AuthenticationService {
     }
 
 
-
-        public boolean invalidateToken(String authToken) {
-            AuthToken token = authTokenRepository.findByToken(authToken);
-            if (token != null) {
-                authTokenRepository.delete(token);
-                return true;
-            }
-            return false;
+    public boolean invalidateToken(String authToken) {
+        AuthToken token = authTokenRepository.findByToken(authToken);
+        if (token != null) {
+            authTokenRepository.delete(token);
+            return true;
         }
-
-
-
+        return false;
+    }
 
 
 }

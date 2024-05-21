@@ -11,18 +11,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/api/users")
 public class AuthController {
+
+    private final AuthenticationService authenticationService;
+
     @Autowired
-    AuthenticationService authenticationService;
+    public AuthController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
-
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         String authToken = authenticationService.authenticate(user.getUsername(), user.getPassword());
-        Map<String, String> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         if (authToken != null) {
             response.put("token", authToken);
             return ResponseEntity.ok(response);
@@ -32,9 +35,9 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/isUserLoggedIn")
-    public ResponseEntity<Map<String, String>> isUserLoggedIn(@RequestHeader("Authorization") String authToken) {
-        Map<String, String> response = new HashMap<>();
+    @GetMapping(value = "/isUserLoggedIn", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Map<String, Object>> isUserLoggedIn(@RequestHeader("Authorization") String authToken) {
+        Map<String, Object> response = new HashMap<>();
         if (authToken != null) {
             if (authenticationService.isValidToken(authToken)) {
                 response.put("message", "User is logged in");
@@ -45,18 +48,15 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(@RequestHeader("Authorization") String authToken) {
+    @PostMapping(value = "/logout", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Map<String, Object>> logout(@RequestHeader("Authorization") String authToken) {
+        Map<String, Object> response = new HashMap<>();
         if (authToken != null && authenticationService.invalidateToken(authToken)) {
-            Map<String, String> response = new HashMap<>();
             response.put("message", "Logged out successfully");
             return ResponseEntity.ok(response);
         } else {
-            Map<String, String> response = new HashMap<>();
             response.put("message", "Invalid token");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
-
-
 }
