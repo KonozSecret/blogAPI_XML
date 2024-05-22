@@ -11,11 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.Marshaller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Result;
 import java.io.IOException;
 import java.io.StringReader;
