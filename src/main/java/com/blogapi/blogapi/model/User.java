@@ -7,7 +7,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 // Entity-Klasse für die Benutzer
 @Entity
-@Table(name ="users")
+@Table(name = "users")
 @XmlRootElement
 public class User {
     @Id
@@ -20,13 +20,16 @@ public class User {
     public String getPassword() {
         return this.password;
     }
+
     @XmlElement
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     @XmlElement
     public String getUsername() {
         return username;
