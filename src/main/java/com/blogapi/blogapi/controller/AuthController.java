@@ -2,17 +2,15 @@ package com.blogapi.blogapi.controller;
 
 import com.blogapi.blogapi.model.User;
 import com.blogapi.blogapi.service.AuthenticationService;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.oxm.Marshaller;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.bind.annotation.*;
-import javax.xml.transform.Result;
-import java.io.IOException;
+
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -23,18 +21,18 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
+    private final Jaxb2Marshaller marshaller;
 
     @Autowired
-    public AuthController(AuthenticationService authenticationService) {
+    public AuthController(AuthenticationService authenticationService, Jaxb2Marshaller marshaller) {
         this.authenticationService = authenticationService;
+        this.marshaller = marshaller;
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> login(@RequestBody String xml) {
         try {
-            JAXBContext context = JAXBContext.newInstance(User.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            User user = (User) unmarshaller.unmarshal(new StringReader(xml));
+            User user = (User) marshaller.unmarshal(new StreamSource(new StringReader(xml)));
 
             String authToken = authenticationService.authenticate(user.getUsername(), user.getPassword());
             Map<String, Object> response = new HashMap<>();
@@ -45,7 +43,7 @@ public class AuthController {
                 response.put("message", "Invalid username or password");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(marshal(response));
             }
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("<message>Internal Server Error</message>");
         }
@@ -78,16 +76,12 @@ public class AuthController {
 
     private String marshal(Object obj) {
         try {
-            JAXBContext context = JAXBContext.newInstance(HashMap.class);
-            Marshaller marshaller = (Marshaller) context.createMarshaller();
             StringWriter sw = new StringWriter();
-            marshaller.marshal(obj, (Result) sw);
+            marshaller.marshal(obj, new StreamResult(sw));
             return sw.toString();
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "<message>Error processing XML</message>";
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
