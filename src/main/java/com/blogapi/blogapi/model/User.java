@@ -1,10 +1,13 @@
 package com.blogapi.blogapi.model;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 
 // Entity-Klasse für die Benutzer
 @Entity
 @Table(name ="users")
+@XmlRootElement(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
