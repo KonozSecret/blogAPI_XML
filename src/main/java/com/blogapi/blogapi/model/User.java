@@ -1,14 +1,14 @@
 package com.blogapi.blogapi.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
 
 // Entity-Klasse für die Benutzer
 @Entity
 @Table(name = "users")
-@XmlRootElement(name = "User")
+@JacksonXmlRootElement(localName = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
