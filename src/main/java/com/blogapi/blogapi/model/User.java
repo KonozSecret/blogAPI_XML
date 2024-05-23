@@ -1,11 +1,9 @@
 package com.blogapi.blogapi.model;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlElement;
 
-
-// Entity-Klasse für die Benutzer
 @Entity
 @Table(name = "users")
 @JacksonXmlRootElement(localName = "user")
@@ -13,15 +11,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
-    @XmlElement
-    public String getPassword() {
-        return this.password;
-    }
+    // Standardkonstruktor
+    public User() {}
 
-    @XmlElement
+    // Getter und Setter
+    @JacksonXmlProperty
     public Long getId() {
         return id;
     }
@@ -30,13 +31,18 @@ public class User {
         this.id = id;
     }
 
-    @XmlElement
+    @JacksonXmlProperty
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @JacksonXmlProperty
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {

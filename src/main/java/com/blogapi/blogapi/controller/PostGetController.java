@@ -5,6 +5,7 @@ import com.blogapi.blogapi.service.AuthenticationService;
 import com.blogapi.blogapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping(value = "/api/posts", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
 public class PostGetController {
     @Autowired
     private PostService postService;
@@ -22,7 +23,7 @@ public class PostGetController {
 
     @GetMapping("/getBlog")
     public ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String authToken) {
-            if (!authenticationService.isValidToken(authToken)) {
+        if (!authenticationService.isValidToken(authToken)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         List<Post> posts = postService.getAllPosts();
