@@ -1,5 +1,6 @@
 package com.blogapi.blogapi.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -10,17 +11,22 @@ import java.time.LocalDateTime;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JacksonXmlProperty(localName = "id")
     private Long id;
 
+    @JacksonXmlProperty(localName = "title")
     @Column(nullable = false)
     private String title;
 
+    @JacksonXmlProperty(localName = "content")
     @Column(nullable = false)
     private String content;
 
+    @JacksonXmlProperty(localName = "createdAt")
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @JacksonXmlProperty(localName = "author")
     @Column(nullable = false)
     private String author;
 
@@ -45,6 +51,7 @@ public class Post {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getContent() {
         return content;
