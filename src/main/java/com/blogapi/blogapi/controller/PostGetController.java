@@ -1,5 +1,3 @@
-package com.blogapi.blogapi.controller;
-
 import com.blogapi.blogapi.model.Post;
 import com.blogapi.blogapi.service.AuthenticationService;
 import com.blogapi.blogapi.service.PostService;
