@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -22,14 +24,18 @@ public class PostController {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/addPost", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<String> addPost(@RequestHeader("Authorization") String authToken, @RequestBody Post post) {
+    public ResponseEntity<Map<String, String>> addPost(@RequestHeader("Authorization") String authToken, @RequestBody Post post) {
+        Map<String, String> response = new HashMap<>();
+
         if (authToken == null || !authenticationService.isValidToken(authToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("<message>Unauthorized access</message>");
+            response.put("message", "Unauthorized access");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         String username = authenticationService.extractUsernameFromToken(authToken);
         if (username == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("<message>Invalid token</message>");
+            response.put("message", "Invalid token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         post.setAuthor(username);
@@ -37,19 +43,11 @@ public class PostController {
 
         boolean added = postService.addPost(post);
         if (added) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("<message>Blog-Eintrag erfolgreich hinzugefügt</message>");
+            response.put("message", "Blog-Eintrag erfolgreich hinzugefügt");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("<message>Fehler beim Hinzufügen des Blog-Eintrags</message>");
+            response.put("message", "Fehler beim Hinzufügen des Blog-Eintrags");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-//    @PostMapping("/addPost")
-//    public ResponseEntity<String> addPost(@RequestBody Post post, @RequestHeader("Authorization") String authToken) {
-//        if (!authenticationService.isValidToken(authToken)) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        }
-//        postService.savePost(post);
-//        String response = "<message>Blog-Eintrag erfolgreich hinzugefügt</message>";
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
 }
