@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "posts")
@@ -61,8 +62,8 @@ public class Post {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getCreatedAt() {
+        return createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
