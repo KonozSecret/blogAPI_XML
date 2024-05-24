@@ -13,15 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/api/posts", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
-public class PostGetController {
+@RequestMapping("/api/posts")public class PostGetController {
     @Autowired
     private PostService postService;
 
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping("/getBlog")
+    @GetMapping(value = "/getBlog", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String authToken) {
         if (!authenticationService.isValidToken(authToken)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -33,7 +32,7 @@ public class PostGetController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Post> getPostById(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id) {
         if (!authenticationService.isValidToken(authToken)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
